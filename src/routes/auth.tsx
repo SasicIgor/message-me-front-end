@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Auth from "@/pages/auth";
+import { z } from "zod";
 
 export const Route = createFileRoute("/auth")({
-  component: RouteComponent,
+  validateSearch: z.object({
+    mode: z.enum(["login", "register"]).default("login"),
+  }),
+  component: () => <Auth />,
 });
-
-function RouteComponent() {
-  return <Auth />;
-}

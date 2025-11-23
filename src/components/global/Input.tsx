@@ -8,11 +8,11 @@ type InputProps = {
 
 const Input = ({ name, ...props }: InputProps) => {
   return (
-    <div>
-      <label htmlFor={name} className="capitalize">
-        {name !== "confirmedPassword" ? name : name.split("P").join(" P")}
+    <div className="p-2 m-1">
+      <label htmlFor={name} className="capitalize inline-block pb-1" >
+        {name !== "confirmPassword" ? name : name.split("P").join(" P")}
       </label>
-      <Inp name={name} {...props} />
+      <Inp name={name} {...props} className="p-4"/>
     </div>
   );
 };
