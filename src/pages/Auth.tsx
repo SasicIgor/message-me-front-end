@@ -1,5 +1,13 @@
-import Button from "@/components/global/Button";
-import Input from "@/components/global/Input";
+import LoginForm from "@/components/form/LoginForm";
+import RegisterForm from "@/components/form/RegisterForm";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Route } from "@/routes/auth";
 import { Link } from "@tanstack/react-router";
 
@@ -13,25 +21,33 @@ const Auth = () => {
 
   return (
     <div className="h-dvh w-dvw flex justify-center items-center">
-      <form className="w-2/5 h-2/5">
-        <Input type="text" name="username" />
-        {isRegister && <Input type="email" name="email" />}
-        <Input type="password" name="password" />
-        {isRegister && <Input type="password" name="confirmPassword" />}
-        <div className="flex justify-between items-center">
-          <Button />
+      <Card className="flex justify-center items-center">
+        <CardHeader className="w-4/5 flex justify-center items-center flex-col text-xl">
+          <CardTitle>
+            {isRegister ? "Join us today!" : "Glad to see you back!"}
+          </CardTitle>
+          <CardDescription className="text-center">
+            {isRegister
+              ? "We want to improve the way people communicate!"
+              : "If you are here again, that means we are doing something right!"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="w-full">
+          {isRegister ? <RegisterForm /> : <LoginForm />}
+        </CardContent>
+        <CardFooter>
           <p className="w-full">
             {message}
             <Link
               to="/auth"
               search={{ mode: isRegister ? "login" : "register" }}
-              className="underline"
+              className="underline font-semibold"
             >
-              {isRegister ? "Login here" : "Registere here"}
+              {isRegister ? "Login here" : "Register here"}
             </Link>
           </p>
-        </div>
-      </form>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
