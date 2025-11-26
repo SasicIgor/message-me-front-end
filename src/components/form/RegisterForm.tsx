@@ -1,7 +1,14 @@
 import { registrationSchema } from "@/validations/authValidations";
 import useAppForm from "./useAppForm";
+import { useNavigate } from "@tanstack/react-router";
+import { createPost } from "@/service/apiService";
+import useAuthStore from "@/store/useAuthStore";
+import type { AuthResponse } from "@/types/responseTypes";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+  const updateUser = useAuthStore((state) => state.updateUser);
+
   const form = useAppForm({
     defaultValues: {
       username: "",
@@ -11,7 +18,10 @@ const RegisterForm = () => {
     },
     validators: { onBlur: registrationSchema },
     onSubmit: async ({ value }) => {
-      alert(JSON.stringify(value));
+      const data = await createPost<AuthResponse>("/auth/user/register", value);
+
+      updateUser({ ...data.user, token: data.token });
+      navigate({ to: "/" });
     },
   });
   return (

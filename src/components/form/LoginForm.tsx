@@ -1,15 +1,25 @@
 import { loginSchema } from "@/validations/authValidations";
 import useAppForm from "./useAppForm";
+import { createPost } from "@/service/apiService";
+import { useNavigate } from "@tanstack/react-router";
+import useAuthStore from "@/store/useAuthStore";
+import type { AuthResponse } from "@/types/responseTypes";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const updateUser = useAuthStore((state) => state.updateUser);
+
   const form = useAppForm({
     defaultValues: {
       username: "",
       password: "",
     },
     validators: { onBlur: loginSchema, onChange: loginSchema },
-    onSubmit: ({ value }) => {
-      alert(JSON.stringify(value));
+    onSubmit: async ({ value }) => {
+      const data = await createPost<AuthResponse>("/auth/user/login", value);
+
+      updateUser({ ...data.user, token: data.token });
+      navigate({ to: "/" });
     },
   });
   return (

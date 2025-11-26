@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { useFormContext } from "./formContext";
-
+import { ClipLoader } from "react-spinners";
 const SubscribeButton = ({ label }: { label: string }) => {
   const form = useFormContext();
   return (
@@ -21,7 +21,13 @@ const SubscribeButton = ({ label }: { label: string }) => {
           }
           className="w-full cursor-pointer"
         >
-          {label}
+          {isSubmitting ? (
+            <>
+              <ClipLoader />
+            </>
+          ) : (
+            label
+          )}
         </Button>
       )}
     </form.Subscribe>

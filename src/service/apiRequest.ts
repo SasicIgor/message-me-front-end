@@ -1,14 +1,15 @@
 import type { AxiosResponse } from "axios";
 
 export const apiRequest = async <T>(
-  request: () => Promise<any>
+  request: () => Promise<AxiosResponse<T>>
 ): Promise<T> => {
   try {
-    const response: AxiosResponse = await request();
+    const response = await request();
     console.log("RESPONSE: ", response);
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(error);
-    throw new Error(error);
+    if(error instanceof Error) throw Error;
+    throw new Error("Unknown error!");
   }
 };
