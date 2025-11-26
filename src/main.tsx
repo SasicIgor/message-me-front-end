@@ -5,8 +5,12 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { formDevtoolsPlugin } from "@tanstack/react-form-devtools";
+import useAuthStore from "./store/useAuthStore.ts";
 
-const router = createRouter({ routeTree, context: { user: null } });
+const router = createRouter({
+  routeTree,
+  context: { authStore: useAuthStore },
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
