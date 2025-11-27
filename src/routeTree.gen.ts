@@ -9,72 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ChatsRouteImport } from './routes/chats'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthSignRouteImport } from './routes/auth/sign'
+import { Route as AppChatRouteImport } from './routes/app/chat'
 
-const ChatsRoute = ChatsRouteImport.update({
-  id: '/chats',
-  path: '/chats',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignRoute = AuthSignRouteImport.update({
+  id: '/auth/sign',
+  path: '/auth/sign',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/app/chat',
+  path: '/app/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/chats': typeof ChatsRoute
+  '/app/chat': typeof AppChatRoute
+  '/auth/sign': typeof AuthSignRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/chats': typeof ChatsRoute
+  '/app/chat': typeof AppChatRoute
+  '/auth/sign': typeof AuthSignRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/chats': typeof ChatsRoute
+  '/app/chat': typeof AppChatRoute
+  '/auth/sign': typeof AuthSignRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/chats'
+  fullPaths: '/' | '/app/chat' | '/auth/sign'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/chats'
-  id: '__root__' | '/' | '/auth' | '/chats'
+  to: '/' | '/app/chat' | '/auth/sign'
+  id: '__root__' | '/' | '/app/chat' | '/auth/sign'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
-  ChatsRoute: typeof ChatsRoute
+  AppChatRoute: typeof AppChatRoute
+  AuthSignRoute: typeof AuthSignRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/chats': {
-      id: '/chats'
-      path: '/chats'
-      fullPath: '/chats'
-      preLoaderRoute: typeof ChatsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -82,13 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/sign': {
+      id: '/auth/sign'
+      path: '/auth/sign'
+      fullPath: '/auth/sign'
+      preLoaderRoute: typeof AuthSignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/chat': {
+      id: '/app/chat'
+      path: '/app/chat'
+      fullPath: '/app/chat'
+      preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
-  ChatsRoute: ChatsRoute,
+  AppChatRoute: AppChatRoute,
+  AuthSignRoute: AuthSignRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

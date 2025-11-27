@@ -5,7 +5,7 @@ export const Route = createFileRoute("/")({
   beforeLoad: async ({ context }) => {
     const user = context.authStore.getState().user;
     if (!user) {
-      throw redirect({ to: "/auth" });
+      throw redirect({ to: "/auth/sign" });
     }
     return <Outlet />;
   },
