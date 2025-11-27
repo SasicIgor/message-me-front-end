@@ -16,7 +16,11 @@ const RegisterForm = () => {
       password: "",
       confirmedPassword: "",
     },
-    validators: { onBlur: registrationSchema },
+    validators: {
+      onChangeAsyncDebounceMs: 1500,
+      onChangeAsync: registrationSchema,
+    },
+
     onSubmit: async ({ value }) => {
       const data = await createPost<AuthResponse>("/auth/user/register", value);
 

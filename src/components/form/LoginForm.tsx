@@ -14,7 +14,10 @@ const LoginForm = () => {
       username: "",
       password: "",
     },
-    validators: { onBlur: loginSchema, onChange: loginSchema },
+    validators: {
+      onChangeAsyncDebounceMs: 1500,
+      onChangeAsync: loginSchema,
+    },
     onSubmit: async ({ value }) => {
       const data = await createPost<AuthResponse>("/auth/user/login", value);
 
