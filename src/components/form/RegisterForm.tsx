@@ -25,7 +25,7 @@ const RegisterForm = () => {
       const data = await createPost<AuthResponse>("/auth/user/register", value);
 
       updateUser({ ...data.user, token: data.token });
-      navigate({ to: "/" });
+      navigate({ to: "/chat" });
     },
   });
   return (

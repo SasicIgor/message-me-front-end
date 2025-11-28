@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Route } from "@/routes/auth/sign";
+import { Route } from "@/routes/auth/route";
 import { Link } from "@tanstack/react-router";
 
 const Auth = () => {
@@ -39,7 +39,7 @@ const Auth = () => {
           <p className="w-full">
             {message}
             <Link
-              to="/auth/sign"
+              to="/auth"
               search={{ mode: isRegister ? "login" : "register" }}
               className="underline font-semibold"
             >

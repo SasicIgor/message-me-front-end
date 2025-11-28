@@ -22,7 +22,7 @@ const LoginForm = () => {
       const data = await createPost<AuthResponse>("/auth/user/login", value);
 
       updateUser({ ...data.user, token: data.token });
-      navigate({ to: "/" });
+      navigate({ to: "/chat" });
     },
   });
   return (
