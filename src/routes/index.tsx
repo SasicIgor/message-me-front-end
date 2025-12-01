@@ -7,6 +7,6 @@ export const Route = createFileRoute("/")({
     if (!user) {
       throw redirect({ to: "/auth" });
     }
-    redirect({ to: "/chat" });
+    redirect({ to: "/app/chat" });
   },
 });

@@ -10,13 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as appChatRouteImport } from './routes/(app)/chat'
-import { Route as appChatChatIdRouteImport } from './routes/(app)/chat.$chatId'
+import { Route as AppChatRouteRouteImport } from './routes/app/chat/route'
+import { Route as AppChatChatIdRouteImport } from './routes/app/chat/$chatId'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -24,48 +30,51 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const appChatRoute = appChatRouteImport.update({
-  id: '/(app)/chat',
+const AppChatRouteRoute = AppChatRouteRouteImport.update({
+  id: '/chat',
   path: '/chat',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const appChatChatIdRoute = appChatChatIdRouteImport.update({
+const AppChatChatIdRoute = AppChatChatIdRouteImport.update({
   id: '/$chatId',
   path: '/$chatId',
-  getParentRoute: () => appChatRoute,
+  getParentRoute: () => AppChatRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/chat': typeof appChatRouteWithChildren
-  '/chat/$chatId': typeof appChatChatIdRoute
+  '/app/chat': typeof AppChatRouteRouteWithChildren
+  '/app/chat/$chatId': typeof AppChatChatIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/chat': typeof appChatRouteWithChildren
-  '/chat/$chatId': typeof appChatChatIdRoute
+  '/app/chat': typeof AppChatRouteRouteWithChildren
+  '/app/chat/$chatId': typeof AppChatChatIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/(app)/chat': typeof appChatRouteWithChildren
-  '/(app)/chat/$chatId': typeof appChatChatIdRoute
+  '/app/chat': typeof AppChatRouteRouteWithChildren
+  '/app/chat/$chatId': typeof AppChatChatIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/chat' | '/chat/$chatId'
+  fullPaths: '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/chat' | '/chat/$chatId'
-  id: '__root__' | '/' | '/auth' | '/(app)/chat' | '/(app)/chat/$chatId'
+  to: '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
+  id: '__root__' | '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRoute
-  appChatRoute: typeof appChatRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -77,6 +86,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -84,38 +100,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)/chat': {
-      id: '/(app)/chat'
+    '/app/chat': {
+      id: '/app/chat'
       path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof appChatRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/app/chat'
+      preLoaderRoute: typeof AppChatRouteRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/(app)/chat/$chatId': {
-      id: '/(app)/chat/$chatId'
+    '/app/chat/$chatId': {
+      id: '/app/chat/$chatId'
       path: '/$chatId'
-      fullPath: '/chat/$chatId'
-      preLoaderRoute: typeof appChatChatIdRouteImport
-      parentRoute: typeof appChatRoute
+      fullPath: '/app/chat/$chatId'
+      preLoaderRoute: typeof AppChatChatIdRouteImport
+      parentRoute: typeof AppChatRouteRoute
     }
   }
 }
 
-interface appChatRouteChildren {
-  appChatChatIdRoute: typeof appChatChatIdRoute
+interface AppChatRouteRouteChildren {
+  AppChatChatIdRoute: typeof AppChatChatIdRoute
 }
 
-const appChatRouteChildren: appChatRouteChildren = {
-  appChatChatIdRoute: appChatChatIdRoute,
+const AppChatRouteRouteChildren: AppChatRouteRouteChildren = {
+  AppChatChatIdRoute: AppChatChatIdRoute,
 }
 
-const appChatRouteWithChildren =
-  appChatRoute._addFileChildren(appChatRouteChildren)
+const AppChatRouteRouteWithChildren = AppChatRouteRoute._addFileChildren(
+  AppChatRouteRouteChildren,
+)
+
+interface AppRouteRouteChildren {
+  AppChatRouteRoute: typeof AppChatRouteRouteWithChildren
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppChatRouteRoute: AppChatRouteRouteWithChildren,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRoute,
-  appChatRoute: appChatRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
