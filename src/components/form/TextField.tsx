@@ -6,9 +6,11 @@ import { useFieldContext } from "./formContext";
 const TextField = ({
   label,
   type = "text",
+  placeholder,
 }: {
   label: string;
   type?: string;
+  placeholder?: string;
 }) => {
   //keep state of user typing on the input
   //dont show error message if true
@@ -20,6 +22,7 @@ const TextField = ({
       <Input
         type={type}
         value={field.state.value}
+        placeholder={placeholder}
         onBlur={() => {
           field.handleBlur();
           setIsTyping(false);

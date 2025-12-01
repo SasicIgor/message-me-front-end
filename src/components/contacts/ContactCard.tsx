@@ -10,7 +10,7 @@ const ContactCard = ({
   lastMessage: string;
 }) => {
   return (
-    <Card className="w-full h-auto p-2 flex flex-row justify-around items-center bg-blue-400">
+    <Card className="w-full h-auto p-2 flex flex-row justify-around items-center bg-blue-400 hover:bg-blue-500">
       <Avatar className="w-12 h-12">
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       </Avatar>

@@ -33,7 +33,7 @@ const ContactList = () => {
     <div className="p-2">
       {data.map(({ username, lastMessage, id }) => {
         return (
-          <Link to={`/app/chat/${id}`}>
+          <Link to={`/app/chat/$chatId`} params={{ chatId: id }}>
             <ContactCard username={username} lastMessage={lastMessage} />
           </Link>
         );
