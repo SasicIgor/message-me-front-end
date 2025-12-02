@@ -1,3 +1,4 @@
+import ChatArea from "@/components/chat-area/ChatArea";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/chat/$chatId")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/app/chat/$chatId")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/app/chat/$chatId"!</div>;
+  return <ChatArea />;
 }
