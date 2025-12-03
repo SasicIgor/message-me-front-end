@@ -1,7 +1,7 @@
 import { registrationSchema } from "@/validations/authValidations";
 import useAppForm from "./useAppForm";
 import { useNavigate } from "@tanstack/react-router";
-import { createPost } from "@/service/apiService";
+import { createPostReq } from "@/service/apiService";
 import useAuthStore from "@/store/useAuthStore";
 import type { AuthResponse } from "@/types/responseTypes";
 
@@ -22,7 +22,7 @@ const RegisterForm = () => {
     },
 
     onSubmit: async ({ value }) => {
-      const data = await createPost<AuthResponse>("/auth/user/register", value);
+      const data = await createPostReq<AuthResponse>("/auth/user/register", value);
 
       updateUser({ ...data.user, token: data.token });
       navigate({ to: "/app/chat" });

@@ -7,7 +7,7 @@ const ContactCard = ({
   lastMessage,
 }: {
   username: string;
-  lastMessage: string;
+  lastMessage?: string;
 }) => {
   return (
     <Card className="w-full h-auto p-2 flex flex-row justify-around items-center bg-blue-400 hover:bg-blue-500">

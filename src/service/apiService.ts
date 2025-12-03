@@ -1,7 +1,11 @@
 import { apiRequest } from "./apiRequest";
 import api from "./axiosInstance";
 
-export const createPost = async <T>(
+export const fetchAllReq = async <T>(path: string): Promise<T[]> => {
+  return apiRequest(() => api.get(`/${path}`));
+};
+
+export const createPostReq = async <T>(
   path: string,
   data: unknown
 ): Promise<T> => {

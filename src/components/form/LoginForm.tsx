@@ -1,6 +1,6 @@
 import { loginSchema } from "@/validations/authValidations";
 import useAppForm from "./useAppForm";
-import { createPost } from "@/service/apiService";
+import { createPostReq } from "@/service/apiService";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/store/useAuthStore";
 import type { AuthResponse } from "@/types/responseTypes";
@@ -19,9 +19,9 @@ const LoginForm = () => {
       onChangeAsync: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      const data = await createPost<AuthResponse>("/auth/user/login", value);
+      const data = await createPostReq<AuthResponse>("/auth/user/login", value);
 
-      updateUser({ ...data.user, token: data.token });
+      updateUser({ ...data.user });
       navigate({ to: "/app/chat" });
     },
   });
