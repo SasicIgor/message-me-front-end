@@ -1,7 +1,11 @@
 import { type User } from "@/store/useAuthStore";
 
-export type AuthResponse = {
+export type BaseResponse<T> = {
   message: string;
+  data: T[];
+};
+
+export type AuthResponse = {
   user: Pick<User, "id" | "username">;
   token: string;
 };

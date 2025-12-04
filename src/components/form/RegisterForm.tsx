@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { createPostReq } from "@/service/apiService";
 import useAuthStore from "@/store/useAuthStore";
 import type { AuthResponse } from "@/types/responseTypes";
+import { setAccessCookie } from "@/utils/cookie";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -22,9 +23,13 @@ const RegisterForm = () => {
     },
 
     onSubmit: async ({ value }) => {
-      const data = await createPostReq<AuthResponse>("/auth/user/register", value);
+      const data = await createPostReq<AuthResponse>(
+        "/auth/user/register",
+        value
+      );
 
-      updateUser({ ...data.user, token: data.token });
+      updateUser({ ...data.user });
+      setAccessCookie(data.token);
       navigate({ to: "/app/chat" });
     },
   });

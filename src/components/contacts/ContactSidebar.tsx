@@ -5,6 +5,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
 import ContactSearch from "./ContactSearch";
 import useToggle from "@/hooks/useToggle";
+import SearchList from "./SearchList";
 
 const ContactSidebar = () => {
   const [value, toggle] = useToggle(false);
@@ -33,7 +34,7 @@ const ContactSidebar = () => {
       </div>
       {/* CONTACT CONTENT */}
       <ScrollArea className="h-full w-auto">
-        <ContactList />
+        {value ? <SearchList /> : <ContactList />}
       </ScrollArea>
     </div>
   );

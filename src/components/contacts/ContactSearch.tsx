@@ -1,9 +1,21 @@
+import { useMutation } from "@tanstack/react-query";
 import useAppForm from "../form/useAppForm";
 import { z } from "zod";
+import { fetchAllReq } from "@/service/apiService";
+import useSearchStore from "@/store/useSearchStore";
+import type { User } from "@/store/useAuthStore";
+
 const searchSchema = z.object({
   search: z.string().min(3, "Type at least 3 charachters"),
 });
 const ContactSearch = () => {
+  const { updateUsers } = useSearchStore();
+  const { mutate } = useMutation({
+    mutationFn: (value: string) => fetchAllReq<User>(`/auth/user/${value}`),
+    onSuccess: (data) => {
+      updateUsers(data);
+    },
+  });
   const form = useAppForm({
     defaultValues: {
       search: "",
@@ -13,9 +25,10 @@ const ContactSearch = () => {
       onChangeAsync: searchSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      if (value.search.length > 2) mutate(value.search);
     },
   });
+
   return (
     <form
       onSubmit={(e) => {

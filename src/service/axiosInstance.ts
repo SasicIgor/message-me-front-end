@@ -1,7 +1,8 @@
 import { getAccesCookie } from "@/utils/cookie";
 import axios from "axios";
 
-const URL = import.meta.env.VITE_BASE_URL as string;
+// const URL = import.meta.env.VITE_BASE_URL as string;
+const URL = "http://localhost:5023/api/v1";
 const token = getAccesCookie();
 const api = axios.create({
   baseURL: URL,
@@ -9,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${token}`;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 

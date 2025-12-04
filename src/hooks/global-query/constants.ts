@@ -1,3 +1,4 @@
 export const queryKeys = {
-    chats: "chats"
-}
+  chats: "chats",
+  searchedUsers: "searchedUsers",
+};

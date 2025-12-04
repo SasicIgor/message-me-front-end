@@ -2,7 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { formDevtoolsPlugin } from "@tanstack/react-form-devtools";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import useAuthStore from "./store/useAuthStore";
 import { routeTree } from "./routeTree.gen";
@@ -18,7 +18,6 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
 
 function App() {
   return (

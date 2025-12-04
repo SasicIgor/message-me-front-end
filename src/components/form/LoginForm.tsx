@@ -3,7 +3,8 @@ import useAppForm from "./useAppForm";
 import { createPostReq } from "@/service/apiService";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/store/useAuthStore";
-import type { AuthResponse } from "@/types/responseTypes";
+import type { AuthResponse, BaseResponse } from "@/types/responseTypes";
+import { setAccessCookie } from "@/utils/cookie";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -19,9 +20,13 @@ const LoginForm = () => {
       onChangeAsync: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      const data = await createPostReq<AuthResponse>("/auth/user/login", value);
+      const {data} = await createPostReq<BaseResponse<AuthResponse>>(
+        "/auth/user/login",
+        value
+      );
 
-      updateUser({ ...data.user });
+      updateUser({ ...data[0].user });
+      setAccessCookie(data[0].token);
       navigate({ to: "/app/chat" });
     },
   });
