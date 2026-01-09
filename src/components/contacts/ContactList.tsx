@@ -2,23 +2,25 @@ import { Link } from "@tanstack/react-router";
 import ContactCard from "./ContactCard";
 import useContactQuery from "./useContactQuery";
 const ContactList = () => {
-  const { contactData } = useContactQuery();
-  console.log(contactData);
+  const { chatData } = useContactQuery();
   return (
     <div className="p-2">
-      {!contactData.length &&
-        "No contact to display. Connect with other users"}
-      {/* {contactData.map(({ memberId, memeberUsername, id, isGroup }) => {
+      {!chatData.length && "No contact to display. Connect with other users"}
+      {chatData.map(({ id, isGroup, memberUsername, name }) => {
+        const chatName = name ? name : "Group chat";
         return (
-          <Link to={`/app/chat/$chatId`} params={{ chatId: id }}>
+          <Link
+            key={id}
+            to={`/app/chat/$chatId`}
+            params={{ chatId: id }}
+            onClick={() => {}}
+          >
             <ContactCard
-              username={
-                isGroup ? `Group chat ${id}` : (memeberUsername as string)
-              }
+              username={isGroup ? chatName : (memberUsername as string)}
             />
           </Link>
         );
-      })} */}
+      })}
     </div>
   );
 };

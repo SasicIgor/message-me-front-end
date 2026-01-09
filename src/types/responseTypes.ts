@@ -14,8 +14,8 @@ export type Chat = {
   id: string;
   name?: string;
   isGroup: boolean;
-  memeberUsername?: string;
-  memberId?: string;
+  memberUsername?: string;
+  memberId: string;
 };
 
 export type ChatsResponse = {

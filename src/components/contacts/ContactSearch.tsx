@@ -9,7 +9,7 @@ const searchSchema = z.object({
   search: z.string().min(3, "Type at least 3 charachters"),
 });
 const ContactSearch = () => {
-  const { updateUsers } = useSearchStore();
+  const { updateUsers, clearUsers } = useSearchStore();
   const { mutate } = useMutation({
     mutationFn: (value: string) => fetchAllReq<User>(`/auth/user/${value}`),
     onSuccess: (data) => {
@@ -39,8 +39,10 @@ const ContactSearch = () => {
       <form.AppField
         listeners={{
           onChangeDebounceMs: 1500,
+          
           onChange: () => {
             form.handleSubmit();
+            clearUsers();
           },
         }}
         name="search"

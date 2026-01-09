@@ -1,22 +1,17 @@
+import { useParams } from "@tanstack/react-router";
+import useMessageQuery from "../contacts/useMessageQuery";
 import { ScrollArea } from "../ui/scroll-area";
 import MessageBubble from "./MessageBubble";
 
-const messages = [
-  {
-    id: "1",
-    chatId: "Igor",
-    senderId: "2",
-    createdAt: "12:24",
-    content: "Some content",
-  },
-];
-
 const ChatMessages = () => {
+  const { chatId } = useParams({ from: "/app/chat/$chatId" });
+  const { chatMessages } = useMessageQuery(chatId);
+
   return (
     <div className="flex-1 overflow-y-hidden p-2">
       <ScrollArea className="h-full w-full">
-        {messages.map((msg) => {
-          return <MessageBubble msg={msg} />;
+        {chatMessages.map((msg) => {
+          return <MessageBubble key={msg.id} msg={msg} />;
         })}
       </ScrollArea>
     </div>

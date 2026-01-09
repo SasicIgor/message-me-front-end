@@ -3,9 +3,10 @@ import { useGetItems } from "@/hooks/global-query/crudHooks";
 import type { Chat } from "@/types/responseTypes";
 
 const useContactQuery = () => {
-  const contactData = useGetItems<Chat>([queryKeys.chats]);
+  const chatData = useGetItems<Chat>([queryKeys.chats]);
+  
   return {
-    contactData,
+    chatData,
   }
 };
 
