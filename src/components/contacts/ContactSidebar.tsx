@@ -4,11 +4,11 @@ import ContactList from "./ContactList";
 import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
 import ContactSearch from "./ContactSearch";
-import useToggle from "@/hooks/useToggle";
 import SearchList from "./SearchList";
+import useSearchStore from "@/store/useSearchStore";
 
 const ContactSidebar = () => {
-  const [value, toggle] = useToggle(false);
+  const { isSearching, toggleIsSearching } = useSearchStore();
   return (
     <div className="h-screen">
       {/* CONTACT HEADER */}
@@ -17,7 +17,7 @@ const ContactSidebar = () => {
         <div className="flex items-center justify-between">
           <Button
             className="mr-2 bg-blue-400 hover:bg-blue-500"
-            onClick={() => toggle()}
+            onClick={() => toggleIsSearching()}
           >
             <MessageSquareDiff className="w-full h-full" />
           </Button>
@@ -29,12 +29,11 @@ const ContactSidebar = () => {
           </Button>
         </div>
       </div>
-      <div className={`${value ? "block" : "hidden"}`}>
-        <ContactSearch></ContactSearch>
-      </div>
+      {isSearching && <ContactSearch />}
+
       {/* CONTACT CONTENT */}
       <ScrollArea className="h-full w-auto">
-        {value ? <SearchList /> : <ContactList />}
+        {isSearching ? <SearchList /> : <ContactList />}
       </ScrollArea>
     </div>
   );

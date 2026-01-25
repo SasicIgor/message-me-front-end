@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import useAppForm from "../form/useAppForm";
 import { z } from "zod";
-import { fetchAllReq } from "@/service/apiService";
+import { getAllReq } from "@/service/apiService";
 import useSearchStore from "@/store/useSearchStore";
 import type { User } from "@/store/useAuthStore";
 
@@ -11,7 +11,7 @@ const searchSchema = z.object({
 const ContactSearch = () => {
   const { updateUsers, clearUsers } = useSearchStore();
   const { mutate } = useMutation({
-    mutationFn: (value: string) => fetchAllReq<User>(`/auth/user/${value}`),
+    mutationFn: (value: string) => getAllReq<User[]>(`/user/${value}`),
     onSuccess: (data) => {
       updateUsers(data);
     },
