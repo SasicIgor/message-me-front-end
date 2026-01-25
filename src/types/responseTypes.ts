@@ -1,21 +1,14 @@
 import { type User } from "@/store/useAuthStore";
+import type { Chat } from "./globalTypes";
 
 export type BaseResponse<T> = {
   message: string;
-  data: T[];
+  data: T;
 };
 
 export type AuthResponse = {
   user: Pick<User, "id" | "username">;
   token: string;
-};
-
-export type Chat = {
-  id: string;
-  name?: string;
-  isGroup: boolean;
-  memberUsername?: string;
-  memberId: string;
 };
 
 export type ChatsResponse = {

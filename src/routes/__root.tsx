@@ -1,10 +1,10 @@
 import type useAuthStore from "@/store/useAuthStore";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 
-type AuthConext = {
+type AuthContext = {
   authStore: typeof useAuthStore
 };
 
-export const Route = createRootRouteWithContext<AuthConext>()({
+export const Route = createRootRouteWithContext<AuthContext>()({
   component: () => <Outlet />,
 });

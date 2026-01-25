@@ -1,14 +1,13 @@
 import { loginSchema } from "@/validations/authValidations";
 import useAppForm from "./useAppForm";
-import { createPostReq } from "@/service/apiService";
+import { postReq } from "@/service/apiService";
 import { useNavigate } from "@tanstack/react-router";
 import useAuthStore from "@/store/useAuthStore";
-import type { AuthResponse, BaseResponse } from "@/types/responseTypes";
-import { setAccessCookie } from "@/utils/cookie";
+import type { AuthResponse } from "@/types/responseTypes";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const updateUser = useAuthStore((state) => state.updateUser);
+  const setUserState = useAuthStore((state) => state.setUserState);
 
   const form = useAppForm({
     defaultValues: {
@@ -20,13 +19,13 @@ const LoginForm = () => {
       onChangeAsync: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      const {data} = await createPostReq<BaseResponse<AuthResponse>>(
-        "/auth/user/login",
-        value
+      const data = await postReq<AuthResponse>(
+        "/auth/login",
+        value,
       );
-
-      updateUser({ ...data[0].user });
-      setAccessCookie(data[0].token);
+      console.log(data);
+      console.log(data.token);
+      setUserState({ ...data.user }, data.token);
       navigate({ to: "/app/chat" });
     },
   });

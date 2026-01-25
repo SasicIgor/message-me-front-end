@@ -5,3 +5,11 @@ export type Message = {
   senderId: string;
   chatId: string;
 };
+
+export type Chat = {
+  id: string;
+  name: string;
+  isGroup: boolean;
+  memberUsername: string;
+  memberId: string;
+};
