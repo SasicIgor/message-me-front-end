@@ -1,3 +1,4 @@
+import { useMsgCtx} from "@/store/context/MessageContext";
 import type { Message } from "@/types/globalTypes";
 
 const baseArrow = `after:content-[''] 
@@ -20,8 +21,10 @@ const leftArrow = `ml-2
   after:left-2`;
 
 const MessageBubble = ({ msg }: { msg: Message }) => {
+  const { addMsgForEdit } = useMsgCtx();
   return (
     <div
+      onClick={() => addMsgForEdit(msg)}
       className={`relative flex flex-col justify-center ${msg.senderId === "2" ? "items-end" : "items-start"}`}
     >
       <div

@@ -2,20 +2,27 @@ import { SendHorizontal } from "lucide-react";
 import useAppForm from "../form/useAppForm";
 import useMessageQuery from "./useMessageQuery";
 import { useParams } from "@tanstack/react-router";
+import { useMsgCtx } from "@/store/context/MessageContext";
 
 const NewMessageForm = () => {
   const { chatId } = useParams({ from: "/app/chat/$chatId" });
 
-  const { createOptimisticMessage } = useMessageQuery(chatId);
+  const { createOptimisticMessage, updateMessage } = useMessageQuery(chatId);
+
+  const { message, removeMsgForEdit } = useMsgCtx();
+  const isEditingForm = message !== null;
 
   const form = useAppForm({
     defaultValues: {
-      content: "",
+      content: isEditingForm ? message.content : "",
     },
     onSubmit: async ({ value }) => {
       console.log("MESSeGING", value);
-      await createOptimisticMessage(value);
+      isEditingForm
+        ? await updateMessage({ data: value, messageId: message.id })
+        : await createOptimisticMessage(value);
       form.reset();
+      removeMsgForEdit();
     },
   });
   return (

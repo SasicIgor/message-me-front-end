@@ -53,10 +53,17 @@ const useMessageQuery = (chatId: string) => {
       data: Pick<Message, "content">;
       messageId: string;
     }) => {
-      return await patchReq(`${path}/${messageId}`, data);
+      console.log("editing");
+      return await patchReq<Message>(`${path}/${messageId}`, data);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey });
+    onSettled: (updatedMsg) => {
+      const data = queryClient.getQueryData(queryKey);
+      console.log(data);
+      queryClient.setQueryData(queryKey, (prev: Message[]) => {
+        return prev.map((msg) =>
+          msg.id === updatedMsg?.id ? updatedMsg : msg,
+        );
+      });
     },
   });
   const { mutate: deleteMessage } = useMutation({
