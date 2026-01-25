@@ -1,6 +1,6 @@
 import { queryKeys } from "@/hooks/global-query/constants";
 import { useGetItems } from "@/hooks/global-query/crudHooks";
-import { postReq } from "@/service/apiService";
+import { deleteReq, patchReq, postReq } from "@/service/apiService";
 import type { Message } from "@/types/globalTypes";
 import { fillOptimisticData } from "@/utils/mockDataOptimisticUpdate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -44,9 +44,34 @@ const useMessageQuery = (chatId: string) => {
       queryClient.invalidateQueries({ queryKey });
     },
   });
+
+  const { mutate: updateMessage } = useMutation({
+    mutationFn: async ({
+      data,
+      messageId,
+    }: {
+      data: Pick<Message, "content">;
+      messageId: string;
+    }) => {
+      return await patchReq(`${path}/${messageId}`, data);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+  });
+  const { mutate: deleteMessage } = useMutation({
+    mutationFn: async (messageId: string) => {
+      return await deleteReq(`${path}/${messageId}`);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+  });
   return {
     chatMessages,
     createOptimisticMessage,
+    updateMessage,
+    deleteMessage,
   };
 };
 

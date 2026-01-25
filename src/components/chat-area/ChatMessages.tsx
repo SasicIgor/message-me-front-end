@@ -11,7 +11,9 @@ const ChatMessages = () => {
     <div className="flex-1 overflow-y-hidden p-2">
       <ScrollArea className="h-full w-full">
         {chatMessages.map((msg) => {
-          return <MessageBubble key={msg.id} msg={msg} />;
+          return (
+            <MessageBubble key={msg.id} msg={msg}/>
+          );
         })}
       </ScrollArea>
     </div>
