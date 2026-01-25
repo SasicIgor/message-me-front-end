@@ -1,5 +1,5 @@
 import { useParams } from "@tanstack/react-router";
-import useMessageQuery from "../contacts/useMessageQuery";
+import useMessageQuery from "./useMessageQuery";
 import { ScrollArea } from "../ui/scroll-area";
 import MessageBubble from "./MessageBubble";
 
