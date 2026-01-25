@@ -1,15 +1,17 @@
 import { apiRequest } from "./apiRequest";
 import api from "./axiosInstance";
 
-export const fetchAllReq = async <T>(path: string): Promise<T[]> => {
-  const req = await apiRequest(() => api.get(`${path}`));
-  console.log("FEATCH ALL: ", req);
-  return req.data as T[];
+export const getAllReq = async <T>(
+  path: string,
+): Promise<T> => {
+  const response = await apiRequest<T>(() => api.get(`${path}`));
+  return response.data;
 };
 
-export const createPostReq = async <T>(
+export const postReq = async <T>(
   path: string,
-  data: unknown
+  data: unknown,
 ): Promise<T> => {
-  return apiRequest<T>(() => api.post(`${path}`, data));
+  const response = await apiRequest<T>(() => api.post(`${path}`, data));
+  return response.data;
 };
