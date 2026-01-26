@@ -9,20 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppChatRouteRouteImport } from './routes/app/chat/route'
-import { Route as AppChatChatIdRouteImport } from './routes/app/chat/$chatId'
+import { Route as ProtectedAppRouteRouteImport } from './routes/_protected/app/route'
+import { Route as ProtectedAppChatRouteRouteImport } from './routes/_protected/app/chat/route'
+import { Route as ProtectedAppChatChatIdRouteImport } from './routes/_protected/app/chat/$chatId'
 
+const ProtectedRoute = ProtectedRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/app',
-  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -30,67 +30,80 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppChatRouteRoute = AppChatRouteRouteImport.update({
+const ProtectedAppRouteRoute = ProtectedAppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedAppChatRouteRoute = ProtectedAppChatRouteRouteImport.update({
   id: '/chat',
   path: '/chat',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => ProtectedAppRouteRoute,
 } as any)
-const AppChatChatIdRoute = AppChatChatIdRouteImport.update({
+const ProtectedAppChatChatIdRoute = ProtectedAppChatChatIdRouteImport.update({
   id: '/$chatId',
   path: '/$chatId',
-  getParentRoute: () => AppChatRouteRoute,
+  getParentRoute: () => ProtectedAppChatRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/app/chat': typeof AppChatRouteRouteWithChildren
-  '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/app': typeof ProtectedAppRouteRouteWithChildren
+  '/app/chat': typeof ProtectedAppChatRouteRouteWithChildren
+  '/app/chat/$chatId': typeof ProtectedAppChatChatIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/app/chat': typeof AppChatRouteRouteWithChildren
-  '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/app': typeof ProtectedAppRouteRouteWithChildren
+  '/app/chat': typeof ProtectedAppChatRouteRouteWithChildren
+  '/app/chat/$chatId': typeof ProtectedAppChatChatIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
   '/auth': typeof AuthRouteRoute
-  '/app/chat': typeof AppChatRouteRouteWithChildren
-  '/app/chat/$chatId': typeof AppChatChatIdRoute
+  '/_protected': typeof ProtectedRouteWithChildren
+  '/_protected/app': typeof ProtectedAppRouteRouteWithChildren
+  '/_protected/app/chat': typeof ProtectedAppChatRouteRouteWithChildren
+  '/_protected/app/chat/$chatId': typeof ProtectedAppChatChatIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
+  fullPaths: '/' | '/auth' | '/app' | '/app/chat' | '/app/chat/$chatId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
-  id: '__root__' | '/' | '/app' | '/auth' | '/app/chat' | '/app/chat/$chatId'
+  to: '/' | '/auth' | '/app' | '/app/chat' | '/app/chat/$chatId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/_protected'
+    | '/_protected/app'
+    | '/_protected/app/chat'
+    | '/_protected/app/chat/$chatId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRoute
+  ProtectedRoute: typeof ProtectedRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -100,51 +113,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/chat': {
-      id: '/app/chat'
+    '/_protected/app': {
+      id: '/_protected/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof ProtectedAppRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/app/chat': {
+      id: '/_protected/app/chat'
       path: '/chat'
       fullPath: '/app/chat'
-      preLoaderRoute: typeof AppChatRouteRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof ProtectedAppChatRouteRouteImport
+      parentRoute: typeof ProtectedAppRouteRoute
     }
-    '/app/chat/$chatId': {
-      id: '/app/chat/$chatId'
+    '/_protected/app/chat/$chatId': {
+      id: '/_protected/app/chat/$chatId'
       path: '/$chatId'
       fullPath: '/app/chat/$chatId'
-      preLoaderRoute: typeof AppChatChatIdRouteImport
-      parentRoute: typeof AppChatRouteRoute
+      preLoaderRoute: typeof ProtectedAppChatChatIdRouteImport
+      parentRoute: typeof ProtectedAppChatRouteRoute
     }
   }
 }
 
-interface AppChatRouteRouteChildren {
-  AppChatChatIdRoute: typeof AppChatChatIdRoute
+interface ProtectedAppChatRouteRouteChildren {
+  ProtectedAppChatChatIdRoute: typeof ProtectedAppChatChatIdRoute
 }
 
-const AppChatRouteRouteChildren: AppChatRouteRouteChildren = {
-  AppChatChatIdRoute: AppChatChatIdRoute,
+const ProtectedAppChatRouteRouteChildren: ProtectedAppChatRouteRouteChildren = {
+  ProtectedAppChatChatIdRoute: ProtectedAppChatChatIdRoute,
 }
 
-const AppChatRouteRouteWithChildren = AppChatRouteRoute._addFileChildren(
-  AppChatRouteRouteChildren,
-)
+const ProtectedAppChatRouteRouteWithChildren =
+  ProtectedAppChatRouteRoute._addFileChildren(
+    ProtectedAppChatRouteRouteChildren,
+  )
 
-interface AppRouteRouteChildren {
-  AppChatRouteRoute: typeof AppChatRouteRouteWithChildren
+interface ProtectedAppRouteRouteChildren {
+  ProtectedAppChatRouteRoute: typeof ProtectedAppChatRouteRouteWithChildren
 }
 
-const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppChatRouteRoute: AppChatRouteRouteWithChildren,
+const ProtectedAppRouteRouteChildren: ProtectedAppRouteRouteChildren = {
+  ProtectedAppChatRouteRoute: ProtectedAppChatRouteRouteWithChildren,
 }
 
-const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
-  AppRouteRouteChildren,
+const ProtectedAppRouteRouteWithChildren =
+  ProtectedAppRouteRoute._addFileChildren(ProtectedAppRouteRouteChildren)
+
+interface ProtectedRouteChildren {
+  ProtectedAppRouteRoute: typeof ProtectedAppRouteRouteWithChildren
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedAppRouteRoute: ProtectedAppRouteRouteWithChildren,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRoute,
+  ProtectedRoute: ProtectedRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

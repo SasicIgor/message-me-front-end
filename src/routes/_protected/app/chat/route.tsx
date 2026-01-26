@@ -1,9 +1,8 @@
-import ContactList from "@/components/contacts/ContactList";
 import ContactSidebar from "@/components/contacts/ContactSidebar";
 import useScreenCheck from "@/hooks/useScreenCheck";
 import { createFileRoute, Outlet, useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/app/chat")({
+export const Route = createFileRoute("/_protected/app/chat")({
   component: RouteComponent,
 });
 

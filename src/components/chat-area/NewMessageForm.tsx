@@ -5,7 +5,7 @@ import { useParams } from "@tanstack/react-router";
 import { useMsgCtx } from "@/store/context/MessageContext";
 
 const NewMessageForm = () => {
-  const { chatId } = useParams({ from: "/app/chat/$chatId" });
+  const { chatId } = useParams({ from: "/_protected/app/chat/$chatId" });
 
   const { createOptimisticMessage, updateMessage } = useMessageQuery(chatId);
 
@@ -25,8 +25,10 @@ const NewMessageForm = () => {
       removeMsgForEdit();
     },
   });
+
   return (
     <form
+      key={message ? message.id : Math.random()}
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();

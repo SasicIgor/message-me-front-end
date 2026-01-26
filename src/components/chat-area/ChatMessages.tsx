@@ -4,7 +4,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import MessageBubble from "./MessageBubble";
 
 const ChatMessages = () => {
-  const { chatId } = useParams({ from: "/app/chat/$chatId" });
+  const { chatId } = useParams({ from: "/_protected/app/chat/$chatId" });
   const { chatMessages } = useMessageQuery(chatId);
 
   return (

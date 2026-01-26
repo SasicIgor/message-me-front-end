@@ -10,6 +10,7 @@ import useAuthStore from "./store/useAuthStore";
 import { routeTree } from "./routeTree.gen";
 import { client } from "./react-query/queryClient";
 import { useEffect } from "react";
+import SpinnerComponent from "./components/global/SpinnerComponent";
 
 const router = createRouter({
   routeTree,
@@ -27,9 +28,14 @@ function App() {
   const initialRefreshFinished = useAuthStore(
     (state) => state.initialRefreshFinished,
   );
+
   useEffect(() => {
     if (!initialRefreshFinished) refresh();
   }, []);
+
+  if (!initialRefreshFinished) {
+    return <SpinnerComponent />;
+  }
 
   return (
     <>
