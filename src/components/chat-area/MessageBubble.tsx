@@ -1,4 +1,5 @@
-import { useMsgCtx} from "@/store/context/MessageContext";
+import { useMsgCtx } from "@/store/context/MessageContext";
+import useAuthStore from "@/store/useAuthStore";
 import type { Message } from "@/types/globalTypes";
 
 const baseArrow = `after:content-[''] 
@@ -22,13 +23,14 @@ const leftArrow = `ml-2
 
 const MessageBubble = ({ msg }: { msg: Message }) => {
   const { addMsgForEdit } = useMsgCtx();
+  const userId = useAuthStore((state) => state.user?.id);
   return (
     <div
       onClick={() => addMsgForEdit(msg)}
-      className={`relative flex flex-col justify-center ${msg.senderId === "2" ? "items-end" : "items-start"}`}
+      className={`relative flex flex-col justify-center ${msg.senderId === userId ? "items-end" : "items-start"}`}
     >
       <div
-        className={`flex mt-1 rounded max-w-11/12 bg-white ${baseArrow} ${msg.senderId === "2" ? rightArrow : leftArrow}`}
+        className={`flex mt-1 rounded max-w-11/12 bg-white ${baseArrow} ${msg.senderId === userId ? rightArrow : leftArrow}`}
       >
         <div className="p-2 text-sm z-1">{msg.content}</div>
         <div className="flex items-end p-1 text-xs">{msg.createdAt}</div>
