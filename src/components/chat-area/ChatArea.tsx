@@ -3,8 +3,10 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import NewMessageForm from "./NewMessageForm";
 import ChatMessages from "./ChatMessages";
 import { MsgCtxProvider } from "@/store/context/MessageContext";
+import useActiveChatStore from "@/store/useActiveChatStore";
 
 const ChatArea = () => {
+  const chat = useActiveChatStore((state) => state.chat);
   return (
     <MsgCtxProvider>
       <div className="h-screen flex flex-col">
@@ -14,7 +16,7 @@ const ChatArea = () => {
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           </Avatar>
           <div>
-            <p className="text-sm">Username</p>
+            <p className="text-sm">{chat?.memberUsername}</p>
             <p className="text-xs">last online</p>
           </div>
         </div>

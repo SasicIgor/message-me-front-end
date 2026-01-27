@@ -3,6 +3,7 @@ import useAppForm from "../form/useAppForm";
 import useMessageQuery from "./useMessageQuery";
 import { useParams } from "@tanstack/react-router";
 import { useMsgCtx } from "@/store/context/MessageContext";
+import { useEffect } from "react";
 
 const NewMessageForm = () => {
   const { chatId } = useParams({ from: "/_protected/app/chat/$chatId" });
@@ -17,7 +18,6 @@ const NewMessageForm = () => {
       content: isEditingForm ? message.content : "",
     },
     onSubmit: async ({ value }) => {
-      console.log("MESSeGING", value);
       isEditingForm
         ? await updateMessage({ data: value, messageId: message.id })
         : await createOptimisticMessage(value);
@@ -25,6 +25,10 @@ const NewMessageForm = () => {
       removeMsgForEdit();
     },
   });
+  useEffect(() => {
+    removeMsgForEdit();
+    form.reset();
+  }, [chatId]);
 
   return (
     <form
@@ -40,6 +44,7 @@ const NewMessageForm = () => {
             name="content"
             children={(field) => (
               <field.SearchField
+                key={chatId}
                 placeholder="type a message"
                 className="border-none focus:outline-none focus-visible:ring-0"
               />

@@ -1,6 +1,7 @@
 import { useMsgCtx } from "@/store/context/MessageContext";
 import useAuthStore from "@/store/useAuthStore";
 import type { Message } from "@/types/globalTypes";
+import { formatMsgDate } from "@/utils/formatMsgDate";
 
 const baseArrow = `after:content-[''] 
   after:absolute 
@@ -23,6 +24,7 @@ const leftArrow = `ml-2
 
 const MessageBubble = ({ msg }: { msg: Message }) => {
   const { addMsgForEdit } = useMsgCtx();
+  const { time } = formatMsgDate(msg.createdAt);
   const userId = useAuthStore((state) => state.user?.id);
   return (
     <div
@@ -33,7 +35,7 @@ const MessageBubble = ({ msg }: { msg: Message }) => {
         className={`flex mt-1 rounded max-w-11/12 bg-white ${baseArrow} ${msg.senderId === userId ? rightArrow : leftArrow}`}
       >
         <div className="p-2 text-sm z-1">{msg.content}</div>
-        <div className="flex items-end p-1 text-xs">{msg.createdAt}</div>
+        <div className="flex items-end p-1 text-xs">{time}</div>
       </div>
     </div>
   );
