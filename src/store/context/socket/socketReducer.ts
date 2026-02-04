@@ -8,10 +8,10 @@ export const initialSocketState: SocketState = {
   joinedChats: [],
 };
 
-enum SocketActionTypes {
+export enum SocketActionTypes {
   SET_CONNECTED = "SET_CONNECTED",
   SET_DISCONNECTED = "SET_DISCONNECTED",
-  JOIN_ROOMS = "JOIN_ROOMS",
+  JOIN_CHATS = "JOIN_CHATS",
 }
 
 type SetConnected = {
@@ -23,7 +23,7 @@ type SetDisconnected = {
 };
 
 type JoinRooms = {
-  type: SocketActionTypes.JOIN_ROOMS;
+  type: SocketActionTypes.JOIN_CHATS;
   payload: string[];
 };
 
@@ -35,7 +35,7 @@ export function socketReducer(state: SocketState, action: SocketActions) {
       return { ...state, isConnected: true };
     case SocketActionTypes.SET_DISCONNECTED:
       return { ...state, isConnected: false };
-    case SocketActionTypes.JOIN_ROOMS:
-      return { ...state, joinedRooms: action.payload };
+    case SocketActionTypes.JOIN_CHATS:
+      return { ...state, joinedChats: action.payload };
   }
 }

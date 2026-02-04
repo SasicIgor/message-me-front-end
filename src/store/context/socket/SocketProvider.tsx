@@ -1,6 +1,10 @@
 import { useEffect, useReducer } from "react";
 import { SocketContext } from "./context";
-import { initialSocketState, socketReducer } from "./socketReducer";
+import {
+  initialSocketState,
+  SocketActionTypes,
+  socketReducer,
+} from "./socketReducer";
 import { socket } from "./socket";
 import useAuthStore from "@/store/useAuthStore";
 
@@ -11,10 +15,14 @@ const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (user) {
       socket.auth = { token: accessToken };
-      console.log("SOCKET: ", socket);
+
       socket.connect();
       socket.on("connect", () => {
+        dispatch({ type: SocketActionTypes.SET_CONNECTED });
         console.log("Socket connected");
+      });
+      socket.on("disconnect", () => {
+        dispatch({ type: SocketActionTypes.SET_DISCONNECTED });
       });
     }
     return () => {
@@ -23,7 +31,11 @@ const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [user]);
 
-  const joinRooms = (chatIds: string[]) => {};
+  const joinRooms = async (chatIds: string[]) => {
+    const response = await socket.emitWithAck("chat:join_many", chatIds);
+    if (response === "ok")
+      dispatch({ type: SocketActionTypes.JOIN_CHATS, payload: chatIds });
+  };
 
   return (
     <SocketContext.Provider value={{ dispatch, state, joinRooms }}>

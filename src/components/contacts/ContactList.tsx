@@ -2,9 +2,29 @@ import { Link } from "@tanstack/react-router";
 import ContactCard from "./ContactCard";
 import useContactQuery from "./useContactQuery";
 import useActiveChatStore from "@/store/useActiveChatStore";
+import SpinnerComponent from "../global/SpinnerComponent";
+import { useEffect } from "react";
+import { useSocketCtx } from "@/store/context/socket/context";
+
 const ContactList = () => {
-  const { chatData } = useContactQuery();
+  const { chatData, isFetching } = useContactQuery();
   const { toggleActiveChat } = useActiveChatStore();
+  const { joinRooms } = useSocketCtx();
+
+  useEffect(() => {
+    if (!chatData || !chatData.length) return;
+    const chatIds = chatData.map((chat) => chat.id);
+    joinRooms(chatIds)
+  }, [chatData]);
+
+  if (isFetching) {
+    return <SpinnerComponent />;
+  }
+
+  if (!chatData) {
+    return <h3>Ops, something went wrong. Please try again later.</h3>;
+  }
+
   return (
     <div className="p-2">
       {!chatData.length && "No contact to display. Connect with other users"}
