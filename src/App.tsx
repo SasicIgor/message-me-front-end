@@ -11,6 +11,7 @@ import { routeTree } from "./routeTree.gen";
 import { client } from "./react-query/queryClient";
 import { useEffect } from "react";
 import SpinnerComponent from "./components/global/SpinnerComponent";
+import SocketCtxProvider from "./store/context/socket/SocketProvider";
 
 const router = createRouter({
   routeTree,
@@ -40,14 +41,16 @@ function App() {
   return (
     <>
       <QueryClientProvider client={client}>
-        <RouterProvider router={router}></RouterProvider>
-        <ReactQueryDevtools />
-        <TanStackDevtools
-          plugins={[
-            formDevtoolsPlugin(),
-            { name: "TanStack Query", render: <ReactQueryDevtoolsPanel /> },
-          ]}
-        />
+        <SocketCtxProvider>
+          <RouterProvider router={router}></RouterProvider>
+          <ReactQueryDevtools />
+          <TanStackDevtools
+            plugins={[
+              formDevtoolsPlugin(),
+              { name: "TanStack Query", render: <ReactQueryDevtoolsPanel /> },
+            ]}
+          />
+        </SocketCtxProvider>
       </QueryClientProvider>
     </>
   );

@@ -3,6 +3,11 @@ export type SocketState = {
   joinedChats: string[];
 };
 
+export const initialSocketState: SocketState = {
+  isConnected: false,
+  joinedChats: [],
+};
+
 enum SocketActionTypes {
   SET_CONNECTED = "SET_CONNECTED",
   SET_DISCONNECTED = "SET_DISCONNECTED",
