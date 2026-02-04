@@ -1,8 +1,11 @@
 import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 
-// const URL = import.meta.env.VITE_BASE_URL as string;
-const URL = "http://localhost:5023/api/v1";
+const URL =
+  import.meta.env.VITE_NODE_ENV === "DEV"
+    ? import.meta.env.VITE_BASE_URL
+    : import.meta.env.VITE_BASE_URL_PRODUCTION;
+
 const api = axios.create({
   baseURL: URL,
   withCredentials: true,
