@@ -7,10 +7,14 @@ import {
 } from "./socketReducer";
 import { socket } from "./socket";
 import useAuthStore from "@/store/useAuthStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/hooks/global-query/constants";
 
 const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(socketReducer, initialSocketState);
   const { user, accessToken } = useAuthStore((state) => state);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (user) {
@@ -23,6 +27,13 @@ const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
       });
       socket.on("disconnect", () => {
         dispatch({ type: SocketActionTypes.SET_DISCONNECTED });
+      });
+
+      socket.on("message:new", ({ chatId }: { chatId: string }) => {
+        console.log("NEW MESSAGE");
+        queryClient.invalidateQueries({
+          queryKey: [queryKeys.messages, chatId],
+        });
       });
     }
     return () => {
