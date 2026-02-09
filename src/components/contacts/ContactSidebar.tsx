@@ -10,7 +10,7 @@ import useSearchStore from "@/store/useSearchStore";
 const ContactSidebar = () => {
   const { isSearching, toggleIsSearching } = useSearchStore();
   return (
-    <div className="h-screen">
+    <div className="h-screen bg-brand-blue-light border-r">
       {/* CONTACT HEADER */}
       <div className="w-full p-3 flex justify-between">
         <h2 className="text-2xl">Chats</h2>
@@ -22,7 +22,7 @@ const ContactSidebar = () => {
             <MessageSquareDiff className="w-full h-full" />
           </Button>
           <Button
-            className="mr-2 bg-blue-400 hover:bg-blue-500"
+            className="mr-2 bg-blue-400 hover:bg-brand-blue-default"
             // onClick={() => toggle()}
           >
             <Users />

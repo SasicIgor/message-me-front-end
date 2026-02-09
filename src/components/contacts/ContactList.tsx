@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import ContactCard from "./ContactCard";
 import useContactQuery from "./useContactQuery";
 import useActiveChatStore from "@/store/useActiveChatStore";
@@ -8,13 +8,17 @@ import { useSocketCtx } from "@/store/context/socket/context";
 
 const ContactList = () => {
   const { chatData, isFetching } = useContactQuery();
-  const { toggleActiveChat } = useActiveChatStore();
+  const { toggleActiveChat, chat } = useActiveChatStore();
+  const { chatId: currentChat } = useParams({
+    strict: false,
+  });
+
   const { joinRooms } = useSocketCtx();
 
   useEffect(() => {
     if (!chatData || !chatData.length) return;
     const chatIds = chatData.map((chat) => chat.id);
-    joinRooms(chatIds)
+    joinRooms(chatIds);
   }, [chatData]);
 
   if (isFetching) {
@@ -30,6 +34,7 @@ const ContactList = () => {
       {!chatData.length && "No contact to display. Connect with other users"}
       {chatData.map(({ id, isGroup, memberUsername, name, memberId }) => {
         const chatName = name ? name : "Group chat";
+        const isActiveChat = currentChat === id;
         return (
           <Link
             key={id}
@@ -41,6 +46,7 @@ const ContactList = () => {
           >
             <ContactCard
               username={isGroup ? chatName : (memberUsername as string)}
+              isActive={isActiveChat}
             />
           </Link>
         );
