@@ -3,24 +3,10 @@ import useAuthStore from "@/store/useAuthStore";
 import type { Message } from "@/types/globalTypes";
 import { formatMsgDate } from "@/utils/formatMsgDate";
 
-const baseArrow = `after:content-[''] 
-  after:absolute 
-  after:z-0
-  after:border-t-16 
-  after:border-l-16
-  after:border-b-16
-  after:border-transparent
-  after:border-l-white
-  after:w-0 
-  after:h-0 
-  after:rotate-90
-  after:-top-1`;
-
-const rightArrow = `mr-2 
-  after:right-2`;
-
-const leftArrow = `ml-2 
-  after:left-2`;
+//user is the one who is currently log in the app
+const userClass = "rounded-2xl rounded-br-none bg-white";
+//member is the person who is he sending messages to
+const memberClass = "rounded-2xl rounded-bl-none bg-brand-blue-lightest";
 
 const MessageBubble = ({ msg }: { msg: Message }) => {
   const { addMsgForEdit } = useMsgCtx();
@@ -28,14 +14,20 @@ const MessageBubble = ({ msg }: { msg: Message }) => {
   const userId = useAuthStore((state) => state.user?.id);
   return (
     <div
-      onClick={() => addMsgForEdit(msg)}
-      className={`relative flex flex-col justify-center ${msg.senderId === userId ? "items-end" : "items-start"}`}
+      onDoubleClick={() => addMsgForEdit(msg)}
+      className={`flex flex-col justify-center ${msg.senderId === userId ? "items-end" : "items-start"}`}
     >
       <div
-        className={`flex mt-1 rounded max-w-11/12 bg-white ${baseArrow} ${msg.senderId === userId ? rightArrow : leftArrow}`}
+        className={`flex flex-col m-1 min-w-1/12 max-w-11/12 ${
+          msg.senderId === userId ? userClass : memberClass
+        }`}
       >
-        <div className="p-2 text-sm z-1">{msg.content}</div>
-        <div className="flex items-end p-1 text-xs">{time}</div>
+        <div className="px-3 py-1 text-sm wrap-break-word">{msg.content}</div>
+        <div
+          className={`flex ${msg.senderId === userId ? "justify-end pr-1" : "justify-start pl-1"}`}
+        >
+          <div className={`flex items-end text-[10px]`}>{time}</div>
+        </div>
       </div>
     </div>
   );

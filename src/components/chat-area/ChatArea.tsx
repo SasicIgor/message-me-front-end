@@ -11,7 +11,7 @@ const ChatArea = () => {
     <MsgCtxProvider>
       <div className="h-screen flex flex-col">
         {/* USER PROFILE INFO */}
-        <div className="flex justify-start aling-center p-2 border-white border-b">
+        <div className="flex justify-start aling-center p-2 bg-brand-blue-light border-b">
           <Avatar className="m-1">
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           </Avatar>

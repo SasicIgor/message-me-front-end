@@ -33,13 +33,14 @@ const NewMessageForm = () => {
   return (
     <form
       key={message ? message.id : Math.random()}
+      className="bg-brand-blue-default"
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
       }}
     >
       <form.AppForm>
-        <div className="flex m-1 bg-blue-700 focus-within:bg-blue-800 rounded-md ">
+        <div className="flex m-1 opacity-90 bg-brand-blue-light focus-within:opacity-100 rounded-md ">
           <form.AppField
             name="content"
             children={(field) => (
