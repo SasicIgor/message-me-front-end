@@ -20,9 +20,9 @@ const Auth = () => {
     : "Don't have an account yet? ";
 
   return (
-    <div className="h-dvh w-dvw flex justify-center items-center">
-      <Card className="flex justify-center items-center w-full sm:w-4/5 md:w-3/5 lg:w-2/5 2xl:w-1/5 mx-4">
-        <CardHeader className="w-4/5 flex justify-center items-center flex-col text-xl">
+    <div className="flex-center h-dvh w-dvw bg-brand-blue-darker">
+      <Card className="flex-center w-full sm:w-4/5 md:w-3/5 lg:w-2/5 mx-4 bg-brand-blue-light">
+        <CardHeader className="flex-center flex-col w-4/5 text-xl">
           <CardTitle>
             {isRegister ? "Join us today!" : "Glad to see you back!"}
           </CardTitle>

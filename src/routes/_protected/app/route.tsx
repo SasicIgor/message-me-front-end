@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_protected/app")({
 
 function RouteComponent() {
   return (
-    <div className="grid grid-cols-12 gap-2 h-screen overflow-hidden">
+    <div className="grid grid-cols-12 h-screen overflow-hidden">
       <Outlet />
     </div>
   );

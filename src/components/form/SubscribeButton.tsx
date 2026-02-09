@@ -31,11 +31,15 @@ const SubscribeButton = ({
             isFormValidating === undefined ||
             isDefaultValue
           }
-          className={cn("w-full cursor-pointer", className)}
+          className={cn(
+            "w-full bg-brand-blue-default",
+            "enabled:cursor-pointer disabled:cursor-not-allowed",
+            className,
+          )}
         >
           {isSubmitting ? (
             <>
-              <ClipLoader />
+              <ClipLoader color="brand-blue-light" />
             </>
           ) : (
             label

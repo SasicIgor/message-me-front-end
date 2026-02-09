@@ -31,6 +31,7 @@ const TextField = ({
           field.handleChange(e.target.value);
           setIsTyping(true);
         }}
+        className="bg-brand-blue-lightest"
       />
 
       {field.state.meta.isBlurred && !field.state.meta.isValid && !isTyping ? (
