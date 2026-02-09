@@ -18,24 +18,19 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-let flag = 1;
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest.retry) {
-      flag = 2;
-      originalRequest.retry = true;
-      if (originalRequest.url === "/auth/refresh") return Promise.reject(error);
+    if (error.response?.status === 401) {
       try {
         const result = await useAuthStore.getState().refresh();
-        if (result?.token) {
-          originalRequest.headers.Authorization = `Bearer ${result.token}`;
-          return api(originalRequest);
+        if (result) {
+          console.log("token: ", result.token);
+          error.config.headers.Authorization = `Bearer ${result.token}`;
         }
+        return api(error.config);
       } catch (error) {
-        useAuthStore.getState().setUserState(null, null);
-        return Promise.reject(error);
+        console.log(error);
       }
     }
     return Promise.reject(error);
