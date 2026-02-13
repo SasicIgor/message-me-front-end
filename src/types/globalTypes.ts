@@ -8,8 +8,8 @@ export type Message = {
 
 export type Chat = {
   id: string;
-  name: string;
+  name: string | null;
   isGroup: boolean;
-  memberUsername: string;
+  memberUsername?: string;
   memberId: string;
 };

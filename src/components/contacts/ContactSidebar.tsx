@@ -1,7 +1,7 @@
 import ContactList from "./ContactList";
 import { ScrollArea } from "../ui/scroll-area";
-import ContactSearch from "./ContactSearch";
-import SearchList from "./SearchList";
+import ContactSearch from "./search/ContactSearch";
+import SearchComponent from "./SearchComponent";
 import useSearchStore from "@/store/useSearchStore";
 import ContactHeader from "./ContactHeader";
 
@@ -15,7 +15,7 @@ const ContactSidebar = () => {
       {isSearching && <ContactSearch />}
       {/* CONTACT CONTENT */}
       <ScrollArea className="w-auto h-11/12 flex-auto">
-        {isSearching ? <SearchList /> : <ContactList />}
+        {isSearching ? <SearchComponent /> : <ContactList />}
       </ScrollArea>
     </div>
   );

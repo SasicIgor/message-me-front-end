@@ -1,13 +1,13 @@
 import { Link, useParams } from "@tanstack/react-router";
 import ContactCard from "./ContactCard";
-import useContactQuery from "./useContactQuery";
+import useChatQuery from "@/components/contacts/useChatQuery";
 import useActiveChatStore from "@/store/useActiveChatStore";
 import SpinnerComponent from "../global/SpinnerComponent";
 import { useEffect } from "react";
 import { useSocketCtx } from "@/store/context/socket/context";
 
 const ContactList = () => {
-  const { chatData, isFetching } = useContactQuery();
+  const { chatData, isFetching } = useChatQuery();
   const { toggleActiveChat, chat } = useActiveChatStore();
   const { chatId: currentChat } = useParams({
     strict: false,
