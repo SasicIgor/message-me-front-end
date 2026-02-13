@@ -1,5 +1,5 @@
 import { queryKeys } from "@/hooks/global-query/constants";
-import { getAllReq, postReq } from "@/service/apiService";
+import { deleteReq, getAllReq, postReq } from "@/service/apiService";
 import useActiveChatStore from "@/store/useActiveChatStore";
 import useSearchStore from "@/store/useSearchStore";
 import type { Chat } from "@/types/globalTypes";
@@ -52,10 +52,22 @@ const useChatQuery = () => {
       navigate({ from: "/app/chat", to: `${chat.id}` });
     },
   });
+  const { mutate: deleteChat } = useMutation({
+    mutationFn: async (id: string) => {
+      await deleteReq(`/${path}/${id}`);
+      return id;
+    },
+    onSuccess: (id) => {
+      queryClient.setQueryData<Chat[]>([queryKeys.chats], (oldChats) => {
+        return oldChats?.filter((chat) => chat.id !== id);
+      });
+    },
+  });
   return {
     chatData,
     isFetching,
     createChat,
+    deleteChat
   };
 };
 
