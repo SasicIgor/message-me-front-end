@@ -4,9 +4,12 @@ import NewMessageForm from "./NewMessageForm";
 import ChatMessages from "./ChatMessages";
 import { MsgCtxProvider } from "@/store/context/MessageContext";
 import useActiveChatStore from "@/store/useActiveChatStore";
+import { useNavigate } from "@tanstack/react-router";
 
 const ChatArea = () => {
   const chat = useActiveChatStore((state) => state.chat);
+  const navigate = useNavigate();
+  if (!chat) return navigate({ to: "/app/chat" });
   return (
     <MsgCtxProvider>
       <div className="h-screen flex flex-col">
@@ -16,7 +19,9 @@ const ChatArea = () => {
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           </Avatar>
           <div>
-            <p className="text-sm">{chat?.memberUsername}</p>
+            <p className="text-sm">
+              {chat.isGroup ? chat.name : chat.memberUsername}
+            </p>
             <p className="text-xs">last online</p>
           </div>
         </div>
