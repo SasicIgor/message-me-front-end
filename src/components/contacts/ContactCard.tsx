@@ -9,7 +9,7 @@ const ContactCard = ({
 }: {
   username: string;
   lastMessage?: string;
-  isActive: boolean;
+  isActive?: boolean;
 }) => {
   return (
     <Card

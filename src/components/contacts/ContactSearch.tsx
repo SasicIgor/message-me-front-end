@@ -1,19 +1,22 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAppForm from "../form/useAppForm";
 import { z } from "zod";
 import { getAllReq } from "@/service/apiService";
-import useSearchStore from "@/store/useSearchStore";
 import type { User } from "@/store/useAuthStore";
+import { queryKeys } from "@/hooks/global-query/constants";
+import { useEffect } from "react";
+import useSearchStore from "@/store/useSearchStore";
 
 const searchSchema = z.object({
   search: z.string().min(3, "Type at least 3 charachters"),
 });
 const ContactSearch = () => {
-  const { updateUsers, clearUsers } = useSearchStore();
+  const queryClient = useQueryClient();
+  const { isSearching, isGroup } = useSearchStore();
   const { mutate } = useMutation({
     mutationFn: (value: string) => getAllReq<User[]>(`/user/${value}`),
     onSuccess: (data) => {
-      updateUsers(data);
+      queryClient.setQueryData([queryKeys.searchedUsers], data);
     },
   });
   const form = useAppForm({
@@ -29,6 +32,10 @@ const ContactSearch = () => {
     },
   });
 
+  useEffect(() => {
+    form.reset();
+  }, [form, isSearching, isGroup]);
+
   return (
     <form
       onSubmit={(e) => {
@@ -39,10 +46,9 @@ const ContactSearch = () => {
       <form.AppField
         listeners={{
           onChangeDebounceMs: 1500,
-          
+
           onChange: () => {
             form.handleSubmit();
-            clearUsers();
           },
         }}
         name="search"
