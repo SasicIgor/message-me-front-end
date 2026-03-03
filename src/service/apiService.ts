@@ -12,6 +12,12 @@ export const postReq = async <T>(path: string, data: unknown): Promise<T> => {
   return response.data;
 };
 
+export const putReq = async <T>(path: string, data: unknown): Promise<T> => {
+  const response = await apiRequest<T>(() => api.put(`${path}`, data));
+  console.log(response);
+  return response.data;
+};
+
 export const patchReq = async <T>(path: string, data: unknown): Promise<T> => {
   const response = await apiRequest<T>(() => api.patch(`${path}`, data));
   return response.data;
