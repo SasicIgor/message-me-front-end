@@ -3,15 +3,22 @@ import useAppForm from "../form/useAppForm";
 import useMessageQuery from "./useMessageQuery";
 import { useParams } from "@tanstack/react-router";
 import { useMsgCtx } from "@/store/context/MessageContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const NewMessageForm = () => {
   const { chatId } = useParams({ from: "/_protected/app/chat/$chatId" });
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { createOptimisticMessage, updateMessage } = useMessageQuery(chatId);
 
   const { message, removeMsgForEdit } = useMsgCtx();
   const isEditingForm = message !== null;
+
+  useEffect(() => {
+    removeMsgForEdit();
+    form.reset();
+    inputRef.current?.focus();
+  }, [chatId]);
 
   const form = useAppForm({
     defaultValues: {
@@ -23,16 +30,12 @@ const NewMessageForm = () => {
         : await createOptimisticMessage(value);
       form.reset();
       removeMsgForEdit();
+      inputRef.current?.focus();
     },
   });
-  useEffect(() => {
-    removeMsgForEdit();
-    form.reset();
-  }, [chatId]);
 
   return (
     <form
-      key={message ? message.id : Math.random()}
       className="bg-brand-blue-default"
       onSubmit={(e) => {
         e.preventDefault();
@@ -45,6 +48,7 @@ const NewMessageForm = () => {
             name="content"
             children={(field) => (
               <field.SearchField
+                ref={inputRef}
                 key={chatId}
                 placeholder="type a message"
                 className="border-none focus:outline-none focus-visible:ring-0"
