@@ -3,23 +3,13 @@ import ContactCard from "./ContactCard";
 import useChatQuery from "@/components/contacts/useChatQuery";
 import useActiveChatStore from "@/store/useActiveChatStore";
 import SpinnerComponent from "../global/SpinnerComponent";
-import { useEffect } from "react";
-import { useSocketCtx } from "@/store/context/socket/context";
 
 const ContactList = () => {
   const { chatData, isFetching } = useChatQuery();
-  const { toggleActiveChat, chat } = useActiveChatStore();
+  const { toggleActiveChat } = useActiveChatStore();
   const { chatId: currentChat } = useParams({
     strict: false,
   });
-
-  const { joinRooms } = useSocketCtx();
-
-  useEffect(() => {
-    if (!chatData || !chatData.length) return;
-    const chatIds = chatData.map((chat) => chat.id);
-    joinRooms(chatIds);
-  }, [chatData]);
 
   if (isFetching) {
     return <SpinnerComponent />;
@@ -32,7 +22,15 @@ const ContactList = () => {
   return (
     <div className="p-2">
       {!chatData.length && "No contact to display. Connect with other users"}
-      {chatData.map(({ id, isGroup, memberUsername, name, memberId }) => {
+      {chatData.map((singleChat) => {
+        const {
+          id,
+          isGroup,
+          memberUsername,
+          name,
+          unreadCount,
+          lastMessageSnippet,
+        } = singleChat;
         const chatName = name ? name : "Group chat";
         const isActiveChat = currentChat === id;
         return (
@@ -41,12 +39,14 @@ const ContactList = () => {
             to={`/app/chat/$chatId`}
             params={{ chatId: id }}
             onClick={() => {
-              toggleActiveChat({ id, isGroup, memberUsername, name, memberId });
+              toggleActiveChat(singleChat);
             }}
           >
             <ContactCard
               username={isGroup ? chatName : (memberUsername as string)}
               isActive={isActiveChat}
+              lastMessageSnippet={lastMessageSnippet}
+              badge={unreadCount}
             />
           </Link>
         );

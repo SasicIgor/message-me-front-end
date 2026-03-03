@@ -4,12 +4,14 @@ import { Card } from "../ui/card";
 
 const ContactCard = ({
   username,
-  lastMessage,
+  lastMessageSnippet,
   isActive,
+  badge,
 }: {
   username: string;
-  lastMessage?: string;
+  lastMessageSnippet?: string;
   isActive?: boolean;
+  badge: number;
 }) => {
   return (
     <Card
@@ -20,9 +22,9 @@ const ContactCard = ({
       </Avatar>
       <div className="flex flex-col items-start w-full">
         <h2 className="text-xl">{username}</h2>
-        <p className="">some messageher</p>
+        <p className="">{lastMessageSnippet}</p>
       </div>
-      <Badge className="w-6 h-6">1</Badge>
+      {badge > 0 && !isActive && <Badge className="w-6 h-6">{badge}</Badge>}
     </Card>
   );
 };
