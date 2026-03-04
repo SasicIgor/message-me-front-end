@@ -1,5 +1,5 @@
 import { queryKeys } from "@/hooks/global-query/constants";
-import { deleteReq, getAllReq, postReq } from "@/service/apiService";
+import { deleteReq, getAllReq, postReq, putReq } from "@/service/apiService";
 import useActiveChatStore from "@/store/useActiveChatStore";
 import useSearchStore from "@/store/useSearchStore";
 import type { Chat } from "@/types/globalTypes";
@@ -10,7 +10,7 @@ const useChatQuery = () => {
   const path = queryKeys.chats;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { toggleActiveChat } = useActiveChatStore();
+  const { toggleActiveChat, chat } = useActiveChatStore();
   const { clearUsers, toggleIsSearching } = useSearchStore();
 
   //get all chats for a user
@@ -22,7 +22,6 @@ const useChatQuery = () => {
   type DMprops = { memberId: string; type: "private" };
   type GroupChatProps = { memberIds: string[]; name: string; type: "group" };
   type ChatMutationProps = DMprops | GroupChatProps;
-
   const { mutate: createChat } = useMutation({
     mutationFn: async (data: ChatMutationProps) => {
       const { type, ...other } = data;
@@ -52,6 +51,18 @@ const useChatQuery = () => {
       navigate({ from: "/app/chat", to: `${chat.id}` });
     },
   });
+  //Add/remove a user from group chat
+  const { mutate: addRemoveGroupMember } = useMutation({
+    mutationFn: async (memberId: string) => {
+      const infoMsg = await putReq<{ message: string }>(
+        `${path}/${chat?.id}`,
+        memberId,
+      );
+      return infoMsg.message;
+    },
+  });
+
+  //Delete chat mutation
   const { mutate: deleteChat } = useMutation({
     mutationFn: async (id: string) => {
       await deleteReq(`/${path}/${id}`);
@@ -67,7 +78,8 @@ const useChatQuery = () => {
     chatData,
     isFetching,
     createChat,
-    deleteChat
+    addRemoveGroupMember,
+    deleteChat,
   };
 };
 
