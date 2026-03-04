@@ -1,13 +1,12 @@
 import { createContext, useContext } from "react";
-import type { SocketActions, SocketState } from "./socketReducer";
+import type { Socket } from "socket.io-client";
 
-type ContextType = {
-  state: SocketState;
-  dispatch: React.Dispatch<SocketActions>;
-  joinRooms: (chatIds: string[]) => void;
+export type SocketCtxState = {
+  isConnected: boolean;
+  socket: Socket;
 };
 
-export const SocketContext = createContext<ContextType | null>(null);
+export const SocketContext = createContext<SocketCtxState | null>(null);
 
 export const useSocketCtx = () => {
   const ctx = useContext(SocketContext);
