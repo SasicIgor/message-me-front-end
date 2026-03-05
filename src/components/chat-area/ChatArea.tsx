@@ -4,14 +4,15 @@ import NewMessageForm from "./NewMessageForm";
 import ChatMessages from "./ChatMessages";
 import { MsgCtxProvider } from "@/store/context/MessageContext";
 import useActiveChatStore from "@/store/useActiveChatStore";
-import { redirect } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import useChatRoom from "@/store/context/socket/hooks/useChatEvents";
 import useMessageEvent from "@/store/context/socket/hooks/useMessageEvent";
 
 const ChatArea = () => {
   const chat = useActiveChatStore((state) => state.chat);
+  const navigate = useNavigate();
 
-  if (!chat) throw redirect({ to: "/app/chat" });
+  if (!chat) return navigate({ to: "/app/chat" });
   useChatRoom(chat.id);
   useMessageEvent(chat.id);
 
