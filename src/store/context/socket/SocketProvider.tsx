@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SocketContext, type SocketCtxState } from "./context";
+import { SocketContext } from "./context";
 import useAuthStore from "@/store/useAuthStore";
 import { socket } from "./socket";
 

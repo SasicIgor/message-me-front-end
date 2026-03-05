@@ -5,7 +5,7 @@ import { useFieldContext } from "./formContext";
 
 type Props = {
   placeholder: string;
-  className: string;
+  className?: string;
 };
 
 const SearchField = forwardRef<HTMLInputElement, Props>(

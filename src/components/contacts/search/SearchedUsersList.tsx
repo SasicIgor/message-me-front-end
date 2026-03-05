@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import ContactCard from "../ContactCard";
 import useSearchStore from "@/store/useSearchStore";
 import useChatQuery from "../useChatQuery";
+import SpinnerComponent from "@/components/global/SpinnerComponent";
 
 const SearchedUsersList = () => {
   const { updateUsers, isGroup, users } = useSearchStore();
@@ -17,6 +18,8 @@ const SearchedUsersList = () => {
   const handleClick = async (user: User) => {
     updateUsers(user);
   };
+
+  if (isFetching) return <SpinnerComponent />;
 
   return (
     <div>

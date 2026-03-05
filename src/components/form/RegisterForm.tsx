@@ -3,7 +3,7 @@ import useAppForm from "./useAppForm";
 import { useNavigate } from "@tanstack/react-router";
 import { postReq } from "@/service/apiService";
 import useAuthStore from "@/store/useAuthStore";
-import type { AuthResponse, BaseResponse } from "@/types/responseTypes";
+import type { AuthResponse } from "@/types/responseTypes";
 
 const RegisterForm = () => {
   const navigate = useNavigate();

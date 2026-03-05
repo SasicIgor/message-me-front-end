@@ -11,8 +11,9 @@ const ContactCard = ({
   username: string;
   lastMessageSnippet?: string;
   isActive?: boolean;
-  badge: number;
+  badge?: number;
 }) => {
+  const displayBadge = !!badge && badge > 0 && !isActive;
   return (
     <Card
       className={`max-w-full h-auto b-none p-2 mb-1 flex flex-row justify-around items-center ${isActive && "bg-brand-blue-lightest"} `}
@@ -24,7 +25,7 @@ const ContactCard = ({
         <h2 className="text-xl">{username}</h2>
         <p className="">{lastMessageSnippet}</p>
       </div>
-      {badge > 0 && !isActive && <Badge className="w-6 h-6">{badge}</Badge>}
+      {displayBadge && <Badge className="w-6 h-6">{badge}</Badge>}
     </Card>
   );
 };

@@ -1,7 +1,7 @@
 import { queryKeys } from "@/hooks/global-query/constants";
 import useChatCache from "@/hooks/useChatCache";
 import { deleteReq, getAllReq, patchReq, postReq } from "@/service/apiService";
-import type { Chat, Message } from "@/types/globalTypes";
+import type { Message } from "@/types/globalTypes";
 import {
   formatMessageList,
   type MsgListReturn,

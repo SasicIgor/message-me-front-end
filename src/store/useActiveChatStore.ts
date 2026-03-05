@@ -13,7 +13,7 @@ type Action = {
 const useActiveChatStore = create<State & Action>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         chat: null,
         toggleActiveChat: (chat) =>
           set(() => (chat ? { chat } : { chat: null })),
