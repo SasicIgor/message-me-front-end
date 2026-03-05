@@ -13,12 +13,17 @@ const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
     socket.connect();
     const onConnect = () => setIsConnected(true);
     const onDisconnect = () => setIsConnected(false);
-
     socket.on("connect", onConnect);
+
+    socket.on("connect_error", (err) => {
+      console.log("ERROR MESSAGE: ", err.message);
+      console.log("ERROR: ", err.cause);
+    });
     socket.on("disconnect", onDisconnect);
 
     return () => {
       socket.off("connect", onConnect);
+      socket.off("connect_error");
       socket.off("disconnect", onDisconnect);
       socket.disconnect();
     };
