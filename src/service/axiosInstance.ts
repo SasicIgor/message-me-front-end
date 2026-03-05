@@ -4,7 +4,7 @@ import axios from "axios";
 const URL =
   import.meta.env.VITE_NODE_ENV === "DEV"
     ? import.meta.env.VITE_BASE_URL
-    : import.meta.env.VITE_BASE_URL_PRODUCTION;
+    : `${import.meta.env.VITE_BASE_URL_PRODUCTION}/api/v1`;
 
 const api = axios.create({
   baseURL: URL,
