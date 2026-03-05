@@ -29,6 +29,5 @@ export const formatMessageList = (msgs: Message[]): MsgListReturn => {
     }
     data.push({ type: "msg", message: msg });
   });
-  console.log(data);
   return data;
 };

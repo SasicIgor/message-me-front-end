@@ -17,7 +17,7 @@ const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
 
     socket.on("connect_error", (err) => {
       console.log("ERROR MESSAGE: ", err.message);
-      console.log("ERROR: ", err.cause);
+      console.log("ERROR: ", err);
     });
     socket.on("disconnect", onDisconnect);
 
