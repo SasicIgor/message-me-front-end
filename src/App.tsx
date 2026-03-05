@@ -12,6 +12,7 @@ import { client } from "./react-query/queryClient";
 import { useEffect } from "react";
 import SpinnerComponent from "./components/global/SpinnerComponent";
 import SocketCtxProvider from "./store/context/socket/SocketProvider";
+import { getAllReq } from "./service/apiService";
 
 const router = createRouter({
   routeTree,
@@ -31,7 +32,12 @@ function App() {
   );
 
   useEffect(() => {
-    if (!initialRefreshFinished) refresh();
+    const healthCheck = async () => {
+      await getAllReq("/health");
+      console.log("health check done");
+      if (!initialRefreshFinished) refresh();
+    };
+    healthCheck();
   }, []);
 
   if (!initialRefreshFinished) {

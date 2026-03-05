@@ -6,26 +6,23 @@ import { socket } from "./socket";
 const SocketCtxProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
   const { user, accessToken } = useAuthStore((state) => state);
-  
 
   useEffect(() => {
-    if (user && socket) {
-      socket.auth = { token: accessToken };
+    if (!user && !socket) return;
+    socket.auth = { token: accessToken };
+    socket.connect();
+    const onConnect = () => setIsConnected(true);
+    const onDisconnect = () => setIsConnected(false);
 
-      socket.connect();
-      socket.on("connect", () => {
-        setIsConnected(true);
-      });
-      socket.on("disconnect", () => {
-        setIsConnected(false);
-      });
-    }
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
       socket.disconnect();
     };
-  }, [user]);
+  }, [user, accessToken]);
 
   return (
     <SocketContext.Provider value={{ isConnected, socket }}>
